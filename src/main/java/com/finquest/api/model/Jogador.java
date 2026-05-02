@@ -1,0 +1,30 @@
+package com.finquest.api.model;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
+
+@Data
+@Entity
+@Table(name = "jogadores")
+public class Jogador {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotBlank
+    private String nomePlayer;
+
+    @Email
+    @NotBlank
+    @Column(unique=true)
+    private String email;
+
+    @NotBlank
+    private String senha;
+
+    private int nivelAtual=1;
+    private int xpPlayer=0;
+    private int vidasJogador=1;
+}

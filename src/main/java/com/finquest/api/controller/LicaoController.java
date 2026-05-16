@@ -23,20 +23,20 @@ public class LicaoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(novo);
     }
 
-    @GetMapping
+    @GetMapping("/listar")
     public ResponseEntity<List<Licao>> listarTodos() {
         List<Licao> licoes = licaoService.listarTodos();
         return ResponseEntity.ok(licoes);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/buscar/{id}")
     public ResponseEntity<Licao> buscarPorId(@PathVariable Long id) {
         return licaoService.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         licaoService.deletar(id);
         return ResponseEntity.noContent().build();

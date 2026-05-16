@@ -23,20 +23,20 @@ public class NivelController {
         return ResponseEntity.status(HttpStatus.CREATED).body(novo);
     }
 
-    @GetMapping
+    @GetMapping("/listar")
     public ResponseEntity<List<Nivel>> listarTodos() {
         List<Nivel> niveis = nivelService.listarTodos();
         return ResponseEntity.ok(niveis);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/buscar/{id}")
     public ResponseEntity<Nivel> buscarPorId(@PathVariable Long id) {
         return nivelService.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/deletar/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         nivelService.deletar(id);
         return ResponseEntity.noContent().build();

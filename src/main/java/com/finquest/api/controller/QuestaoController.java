@@ -20,8 +20,7 @@ public class QuestaoController {
 
     @PostMapping
     public ResponseEntity<Questao> cadastrar(@RequestBody @Valid Questao questao) {
-        Questao nova = questaoService.cadastrar(questao);
-        return ResponseEntity.status(HttpStatus.CREATED).body(nova);
+        return ResponseEntity.status(HttpStatus.CREATED).body(questaoService.cadastrar(questao));
     }
 
     @GetMapping("/listar")
@@ -44,10 +43,17 @@ public class QuestaoController {
     @PostMapping("/{id}/responder")
     public ResponseEntity<Map<String, Object>> responder(
             @PathVariable Long id,
-            @RequestBody Map<String, String> payload) {
-        String respostaInformada = payload.get("resposta");
-        boolean correta = questaoService.verificarResposta(id, respostaInformada);
-        return ResponseEntity.ok(Map.of("correta", correta));
+            @RequestBody Map<String, Object> payload) {
+
+        Long jogadorId = Long.valueOf(payload.get("jogadorId").toString());
+        String resposta = payload.get("resposta").toString();
+
+        boolean correta = questaoService.verificarResposta(id, jogadorId, resposta);
+
+        return ResponseEntity.ok(Map.of(
+                "correta", correta,
+                "mensagem", correta ? "Resposta correta! XP adicionado." : "Resposta errada. Tente novamente."
+        ));
     }
 
     @DeleteMapping("/delete/{id}")

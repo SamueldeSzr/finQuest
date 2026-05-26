@@ -18,27 +18,41 @@ public class JogadorService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    public Jogador cadastrar(Jogador jogador){
-        String senhaCriptografada = passwordEncoder.encode(jogador.getSenha());
-        jogador.setSenha(senhaCriptografada);
+    public Jogador cadastrar(Jogador jogador) {
+        jogador.setSenha(passwordEncoder.encode(jogador.getSenha()));
         return jogadorRepository.save(jogador);
     }
 
-    public List<Jogador> listarTodos(){
+    public List<Jogador> listarTodos() {
         return jogadorRepository.findAll();
     }
 
-    public Optional<Jogador> buscarPorId(Long id){
+    public Optional<Jogador> buscarPorId(Long id) {
         return jogadorRepository.findById(id);
     }
 
-    public Optional<Jogador> buscarPorEmail(String email){
+    public Optional<Jogador> buscarPorEmail(String email) {
         return jogadorRepository.findByEmail(email);
     }
 
-    public void deletar(Long id){
+    public void deletar(Long id) {
         jogadorRepository.deleteById(id);
     }
 
+    public Jogador darXp(Long jogadorId, int xp) {
+        Jogador jogador = jogadorRepository.findById(jogadorId)
+                .orElseThrow(() -> new RuntimeException("Jogador não encontrado"));
 
+        jogador.setXpPlayer(jogador.getXpPlayer() + xp);
+        verificarNivel(jogador);
+
+        return jogadorRepository.save(jogador);
+    }
+
+    private void verificarNivel(Jogador jogador) {
+        int xpParaProximoNivel = jogador.getNivelAtual() * 100;
+        if (jogador.getXpPlayer() >= xpParaProximoNivel) {
+            jogador.setNivelAtual(jogador.getNivelAtual() + 1);
+        }
+    }
 }

@@ -1,3 +1,5 @@
+package com.finquest.api.controller;
+
 import com.finquest.api.dto.JogadorResponse;
 import com.finquest.api.model.Jogador;
 import com.finquest.api.service.JogadorService;

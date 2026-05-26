@@ -14,6 +14,9 @@ public class QuestaoService {
     @Autowired
     private QuestaoRepository questaoRepository;
 
+    @Autowired
+    private JogadorService jogadorService;
+
     public Questao cadastrar(Questao questao) {
         return questaoRepository.save(questao);
     }
@@ -30,10 +33,17 @@ public class QuestaoService {
         return questaoRepository.findById(id);
     }
 
-    public boolean verificarResposta(Long id, String respostaInformada) {
-        Questao questao = questaoRepository.findById(id)
+    public boolean verificarResposta(Long questaoId, Long jogadorId, String respostaInformada) {
+        Questao questao = questaoRepository.findById(questaoId)
                 .orElseThrow(() -> new RuntimeException("Questão não encontrada"));
-        return questao.getRespostaCorreta().equalsIgnoreCase(respostaInformada);
+
+        boolean correta = questao.getRespostaCorreta().equalsIgnoreCase(respostaInformada);
+
+        if (correta) {
+            jogadorService.darXp(jogadorId, questao.getXpRecompensa());
+        }
+
+        return correta;
     }
 
     public void deletar(Long id) {

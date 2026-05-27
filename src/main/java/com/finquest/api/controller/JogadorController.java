@@ -47,6 +47,20 @@ public class JogadorController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @PatchMapping("/{id}/xp")
+    public ResponseEntity<JogadorResponse> darXp(@PathVariable Long id, @RequestParam int quantidade) {
+        try {
+            Jogador atualizado = jogadorService.darXp(id, quantidade);
+            JogadorResponse response = new JogadorResponse(
+                    atualizado.getId(), atualizado.getNomePlayer(), atualizado.getEmail(),
+                    atualizado.getNivelAtual(), atualizado.getXpPlayer(), atualizado.getVidasJogador()
+            );
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable long id) {
         jogadorService.deletar(id);

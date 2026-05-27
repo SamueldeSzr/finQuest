@@ -5,9 +5,10 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
-@Data
+
 @Entity
 @Table(name = "jogadores")
+@Data
 public class Jogador {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

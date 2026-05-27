@@ -20,7 +20,7 @@ public class CarteiraService {
 
     public Carteira buscarPorJogador(Jogador jogador) {
         return carteiraRepository.findByJogador(jogador)
-                .orElseThrow(() -> new RuntimeException("Carteira não encontrada"));
+                .orElseGet(() -> criarCarteira(jogador));
     }
 
     public Carteira adicionarCredito(Jogador jogador, double valor){

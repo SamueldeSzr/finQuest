@@ -51,8 +51,9 @@ public class JogadorService {
 
     private void verificarNivel(Jogador jogador) {
         int xpParaProximoNivel = jogador.getNivelAtual() * 100;
-        if (jogador.getXpPlayer() >= xpParaProximoNivel) {
+        while (jogador.getXpPlayer() >= xpParaProximoNivel) {
             jogador.setNivelAtual(jogador.getNivelAtual() + 1);
+            xpParaProximoNivel = jogador.getNivelAtual() * 100;
         }
     }
 }
